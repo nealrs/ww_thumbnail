@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>WW Thumbnail Builder</title>
+  <meta name="robots" content="noindex">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:600,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Unica+One' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700" rel="stylesheet">
+  <!--<link rel="stylesheet" href="/public/css/styles.css">-->
+
+  <style>
+    /*body{
+      margin:0;
+      padding:0;
+    }*/
+
+    /*canvas{
+      background-image: url('http://res.cloudinary.com/wakeywakey/image/upload/v1482082192/42r.jpg');
+    }*/
+  </style>
+
+  <script type="text/javascript">
+    function init() {
+      var can = document.getElementById("canvas");
+      var ctx = can.getContext("2d");
+
+      //draw background
+      var image = document.getElementById("background");
+      ctx.drawImage(image, 0, 0);
+
+      // set text size & content
+      ctx.textAlign="center";
+      ctx.font = "70px Open Sans";
+      title = document.getElementById("title").value;
+      var width = ctx.measureText(title).width;
+      var height = ctx.measureText(title).height;
+      //console.log(width);
+
+      // draw red rectangle
+      ctx.fillStyle = "#cc3311";
+      ctx.fillRect( (720-1.2*width)/2, 490, 1.2*width, 110 );
+
+      // draw text
+      ctx.fillStyle = "white";
+      ctx.fillText(title, 360, 600-35);
+    }
+
+    function downloadCanvas() {
+      window.open(document.getElementById('canvas').toDataURL());
+    }
+
+    /*function exportpng(){
+      //fn = document.getElementById("episode").value;
+      //console.log(fn);
+      downloadCanvas();
+    }*/
+
+    function updateImage() {
+      var fn = document.getElementById('image').files[0].name;
+      console.log(fn);
+      document.getElementById('background').src = fn;
+
+    }
+
+  </script>
+
+</head>
+
+<body>
+    <p>1. Select base image (must be 720x720)<br>
+      &nbsp;<input type="file" id="image" onchange="updateImage()" />
+    </p>
+
+    <!--<p>2. What episode # is this?<br>
+      <input type="number" id="episode" required placeholder="43"></input>
+    </p>-->
+
+    <p>2. What's the title of this episode?<br>
+      <input type="text" id="title" required placeholder="Episode title"></input>
+    </p>
+
+    <p>
+      <button onclick="init()">Render</button> &nbsp;
+
+      <button id="downloader" onclick="downloadCanvas()">Export</button> &nbsp;
+
+      <button onclick="location.reload()">Reset</button>
+    </p>
+
+  <canvas id="canvas" height="720" width="720"></canvas>
+  <div style="display:none;">
+  <img id="background" src="" width="720" height="720">
+  </div>
+
+</body>
+
+</html>
